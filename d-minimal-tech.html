@@ -9,9 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     /* ============================================
-       DIRECTION D — MINIMAL TECH
-       Apple × Notion — fond clair, N&B, typo tech
-       Dégradés sombres sur accents, ultra-minimal
+       DIRECTION D v2 — MINIMAL TECH + DEPTH
+       Apple × Notion + touches de profondeur/folie
        ============================================ */
 
     :root {
@@ -43,17 +42,56 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      cursor: none;
     }
+
+    /* ---- CUSTOM CURSOR ---- */
+    .cursor {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--text);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.15s,
+                  border-color 0.15s,
+                  width 0.15s,
+                  height 0.15s;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+      background: transparent;
+    }
+    .cursor.hovering {
+      width: 40px;
+      height: 40px;
+      background: rgba(37, 99, 235, 0.08);
+      border-color: var(--accent-blue);
+    }
+    a, button, .btn, .pillar, .card-example, .step { cursor: none; }
+
+    /* ---- NOISE TEXTURE OVERLAY ---- */
+    .noise-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+    }
+    .noise-section { position: relative; }
 
     /* ---- NAV ---- */
     nav {
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
       z-index: 100;
       padding: 0 2rem;
     }
@@ -84,6 +122,11 @@
       margin: 0 1px;
       position: relative;
       top: 1px;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+    }
+    .logo:hover .dot {
+      transform: scale(1.6);
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
     }
     .nav-links { display: flex; gap: 2rem; align-items: center; }
     .nav-links a {
@@ -108,21 +151,27 @@
       padding: 0.5rem 1rem;
       border-radius: var(--radius);
       border: none;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
       letter-spacing: -0.01em;
+      position: relative;
+      overflow: hidden;
     }
     .btn-primary {
       background: var(--accent-gradient);
       color: #fff;
       padding: 0.55rem 1.15rem;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
     }
     .btn-primary:hover {
       background: var(--accent-gradient-hover);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-      transform: translateY(-0.5px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2), 0 4px 10px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
     }
     .btn-secondary {
       background: var(--bg);
@@ -130,15 +179,19 @@
       border: 1px solid var(--border);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
-    .btn-secondary:hover { border-color: #D4D4D4; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .btn-secondary:hover {
+      border-color: #D4D4D4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transform: translateY(-0.5px);
+    }
     .btn-ghost {
       background: transparent;
       color: var(--text-secondary);
       padding: 0.5rem 0;
     }
     .btn-ghost:hover { color: var(--text); }
-    .btn-ghost .arrow { transition: transform 0.15s; }
-    .btn-ghost:hover .arrow { transform: translateX(2px); }
+    .btn-ghost .arrow { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-block; }
+    .btn-ghost:hover .arrow { transform: translateX(4px); }
     .btn-lg {
       padding: 0.7rem 1.5rem;
       font-size: 0.875rem;
@@ -172,10 +225,11 @@
       background: var(--accent-blue);
       border-radius: 50%;
       animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(37, 99, 235, 0.4); }
+      50% { opacity: 0.4; box-shadow: 0 0 2px rgba(37, 99, 235, 0.1); }
     }
     .hero h1 {
       font-size: 3rem;
@@ -183,6 +237,25 @@
       line-height: 1.1;
       letter-spacing: -0.04em;
       margin-bottom: 1.25rem;
+    }
+    .hero h1 .shimmer {
+      background: linear-gradient(
+        105deg,
+        #0A0A0A 0%,
+        #0A0A0A 40%,
+        #2563EB 50%,
+        #0A0A0A 60%,
+        #0A0A0A 100%
+      );
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 100% 0; }
+      50% { background-position: 0% 0; }
     }
     .hero h1 .thin {
       font-weight: 400;
@@ -198,14 +271,37 @@
     }
     .hero-actions { display: flex; gap: 0.75rem; align-items: center; }
 
-    /* Hero Visual — Minimal data card */
+    /* Hero Visual — Minimal data card with GLOW */
+    .hero-card-wrap {
+      position: relative;
+    }
+    .hero-card-glow {
+      position: absolute;
+      inset: -1px;
+      background: radial-gradient(
+        ellipse at 50% 0%,
+        rgba(37, 99, 235, 0.12) 0%,
+        transparent 60%
+      );
+      border-radius: 18px;
+      filter: blur(20px);
+      z-index: 0;
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
     .hero-card {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.06);
       border-radius: 16px;
       padding: 2rem;
       position: relative;
       overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 30px rgba(0,0,0,0.04);
     }
     .hero-card::before {
       content: '';
@@ -269,12 +365,16 @@
       background: var(--border-subtle);
       border-radius: 2px;
       margin-top: 0.5rem;
+      overflow: hidden;
     }
     .metric-bar-fill {
       height: 100%;
       border-radius: 2px;
       background: var(--accent-gradient);
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .metric-bar-fill.animated { /* set via JS on scroll */ }
 
     /* ---- SECTION ---- */
     section { padding: 5rem 2rem; }
@@ -303,6 +403,17 @@
       letter-spacing: -0.01em;
     }
 
+    /* ---- FADE IN ON SCROLL ---- */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ---- PILLAR CARDS ---- */
     .pillars {
       display: grid;
@@ -317,9 +428,27 @@
     .pillar {
       background: var(--bg);
       padding: 2rem 1.5rem;
-      transition: background 0.15s;
+      transition: background 0.2s, box-shadow 0.2s;
+      position: relative;
     }
-    .pillar:hover { background: var(--bg-subtle); }
+    .pillar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 2px;
+      background: var(--accent-gradient);
+      opacity: 0;
+      transition: opacity 0.25s;
+      border-radius: 2px;
+    }
+    .pillar:hover {
+      background: var(--bg-subtle);
+    }
+    .pillar:hover::after {
+      opacity: 1;
+    }
     .pillar .number {
       font-family: var(--font-mono);
       font-size: 0.65rem;
@@ -375,12 +504,20 @@
       margin-bottom: 1.25rem;
       background: var(--bg);
       border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .step:hover .step-icon {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
     .step.active .step-icon {
       background: var(--accent-gradient);
       border: none;
       color: #fff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+    }
+    .step.active:hover .step-icon {
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
     }
     .step .step-num {
       font-family: var(--font-mono);
@@ -412,6 +549,22 @@
       line-height: 1.45;
       letter-spacing: -0.025em;
       margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .proof blockquote::before {
+      content: '"';
+      position: absolute;
+      top: -1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 4rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      opacity: 0.15;
     }
     .proof .author {
       font-size: 0.8rem;
@@ -466,6 +619,11 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--border-subtle);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .swatch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     .swatch-color { height: 80px; }
     .swatch-info { padding: 0.625rem 0.75rem; }
@@ -500,9 +658,13 @@
       font-size: 0.825rem;
       color: var(--text-tertiary);
       width: 280px;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
     }
-    .input-field:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08); outline: none; }
+    .input-field:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08), 0 2px 8px rgba(37, 99, 235, 0.06);
+    }
     .tag {
       display: inline-flex;
       align-items: center;
@@ -516,16 +678,18 @@
     .tag-default { background: var(--bg-muted); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
     .tag-blue { background: rgba(37, 99, 235, 0.06); color: var(--accent-blue); }
     .tag-dark { background: var(--text); color: var(--bg); }
-    .divider { width: 100%; height: 1px; background: var(--border-subtle); margin: 1rem 0; }
     .card-example {
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 1.5rem;
       max-width: 320px;
-      transition: box-shadow 0.15s;
+      transition: box-shadow 0.25s, transform 0.25s;
     }
-    .card-example:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+    .card-example:hover {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
     .card-example h4 { font-size: 0.9rem; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 0.375rem; }
     .card-example p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1rem; }
 
@@ -545,11 +709,33 @@
     .cta-section::before {
       content: '';
       position: absolute;
-      top: 0;
-      right: 0;
-      width: 50%;
-      height: 100%;
-      background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.15), transparent 60%);
+      top: -50%;
+      right: -20%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(37, 99, 235, 0.12) 0%,
+        transparent 55%
+      );
+      animation: ctaGlow 6s ease-in-out infinite;
+    }
+    @keyframes ctaGlow {
+      0%, 100% { transform: translate(0, 0); opacity: 0.6; }
+      50% { transform: translate(-5%, 5%); opacity: 1; }
+    }
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 40%;
+      height: 150%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(37, 99, 235, 0.06) 0%,
+        transparent 50%
+      );
     }
     .cta-section h2 {
       font-size: 2.25rem;
@@ -557,12 +743,14 @@
       letter-spacing: -0.035em;
       margin-bottom: 0.75rem;
       position: relative;
+      z-index: 1;
     }
     .cta-section p {
       color: var(--text-tertiary);
       font-size: 0.95rem;
       margin-bottom: 2rem;
       position: relative;
+      z-index: 1;
     }
     .cta-section .btn {
       background: #fff;
@@ -571,8 +759,12 @@
       padding: 0.75rem 1.75rem;
       border-radius: 10px;
       position: relative;
+      z-index: 1;
     }
-    .cta-section .btn:hover { box-shadow: 0 8px 24px rgba(255,255,255,0.1); }
+    .cta-section .btn:hover {
+      box-shadow: 0 8px 30px rgba(255,255,255,0.12);
+      transform: translateY(-1px);
+    }
 
     /* ---- FOOTER ---- */
     footer {
@@ -599,10 +791,14 @@
       font-weight: 500;
       text-decoration: none;
       z-index: 100;
-      transition: opacity 0.15s;
+      transition: all 0.2s;
       letter-spacing: -0.01em;
+      cursor: none;
     }
-    .back-link:hover { opacity: 0.8; }
+    .back-link:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transform: translateY(-1px);
+    }
     .direction-badge {
       position: fixed;
       top: 72px;
@@ -618,11 +814,27 @@
       text-transform: uppercase;
       z-index: 100;
     }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      .cursor { display: none; }
+      a, button, .btn, .pillar, .card-example, .step { cursor: auto; }
+      .hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 7rem; }
+      .pillars { grid-template-columns: 1fr 1fr; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .step::after { display: none; }
+      .palette { flex-wrap: wrap; }
+      .swatch { min-width: calc(50% - 0.375rem); }
+    }
   </style>
 </head>
 <body>
 
-  <div class="direction-badge">Direction D — Minimal Tech</div>
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor"></div>
+
+  <div class="direction-badge">Direction D v2 — Minimal Tech</div>
   <a href="index.html" class="back-link">&larr; Toutes les directions</a>
 
   <!-- NAV -->
@@ -645,42 +857,45 @@
         <span class="pulse"></span>
         consultant growth + ia — france
       </div>
-      <h1>Votre funnel perd de l'argent.<br><span class="thin">Je le vois, je le prouve, on le corrige.</span></h1>
+      <h1><span class="shimmer">Votre funnel perd de l'argent.</span><br><span class="thin">Je le vois, je le prouve, on le corrige.</span></h1>
       <p>Audit data, optimisation conversion et outils IA sur mesure pour TPE/PME. Donnees souveraines, resultats mesurables.</p>
       <div class="hero-actions">
         <a href="#" class="btn btn-primary btn-lg">Simuler mon ROI</a>
         <a href="#" class="btn btn-ghost">Voir un cas client <span class="arrow">&rarr;</span></a>
       </div>
     </div>
-    <div class="hero-card">
-      <div class="hero-card-header">
-        <span class="label">conversion_audit.report</span>
-        <span class="status">cas reel</span>
-      </div>
-      <div class="metric-row">
-        <div>
-          <div class="metric-label">Conversion avant</div>
-          <div class="metric-bar-track"><div class="metric-bar-fill" style="width: 12%;"></div></div>
+    <div class="hero-card-wrap">
+      <div class="hero-card-glow"></div>
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <span class="label">conversion_audit.report</span>
+          <span class="status">cas reel</span>
         </div>
-        <div class="metric-value">1.2%</div>
-      </div>
-      <div class="metric-row">
-        <div>
-          <div class="metric-label">Conversion apres</div>
-          <div class="metric-bar-track"><div class="metric-bar-fill" style="width: 66%;"></div></div>
+        <div class="metric-row">
+          <div>
+            <div class="metric-label">Conversion avant</div>
+            <div class="metric-bar-track"><div class="metric-bar-fill" data-width="12"></div></div>
+          </div>
+          <div class="metric-value">1.2%</div>
         </div>
-        <div class="metric-value highlight">6.65%</div>
-      </div>
-      <div class="metric-row">
-        <div class="metric-label">ROI genere</div>
-        <div class="metric-value highlight" style="font-size: 2rem;">+454%</div>
+        <div class="metric-row">
+          <div>
+            <div class="metric-label">Conversion apres</div>
+            <div class="metric-bar-track"><div class="metric-bar-fill" data-width="66"></div></div>
+          </div>
+          <div class="metric-value highlight">6.65%</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-label">ROI genere</div>
+          <div class="metric-value highlight" style="font-size: 2rem;">+454%</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- PILLARS -->
   <section>
-    <div class="container">
+    <div class="container fade-in">
       <div class="section-mono">// methodologie</div>
       <div class="section-title">Quatre piliers. Zero bullshit.</div>
       <div class="section-desc">Pas de "transformation digitale". Des resultats concrets, des donnees souveraines, un humain aux commandes.</div>
@@ -710,8 +925,8 @@
   </section>
 
   <!-- HITL PROCESS -->
-  <section class="process-section">
-    <div class="container">
+  <section class="process-section noise-section">
+    <div class="container fade-in">
       <div class="section-mono">// processus hitl</div>
       <div class="section-title">L'IA travaille. Vous decidez.</div>
       <div class="section-desc">Chaque etape inclut un checkpoint humain. Conforme EU AI Act, article 14.</div>
@@ -746,10 +961,10 @@
 
   <!-- SOCIAL PROOF -->
   <section>
-    <div class="container">
+    <div class="container fade-in">
       <div class="proof">
         <div class="section-mono" style="text-align:center;">// retour client</div>
-        <blockquote>"On est passe de 1.2% a 6.65% de conversion. La premiere fois qu'un prestataire me montre les chiffres avant de vendre."</blockquote>
+        <blockquote>On est passe de 1.2% a 6.65% de conversion. La premiere fois qu'un prestataire me montre les chiffres avant de vendre.</blockquote>
         <div class="author"><strong>Client Smartduck</strong> — Franchise, 5 points de vente</div>
       </div>
     </div>
@@ -757,7 +972,7 @@
 
   <!-- TYPOGRAPHY -->
   <section class="typo-section">
-    <div class="container">
+    <div class="container fade-in">
       <div class="section-mono">// typographie</div>
       <div class="section-title">Inter + JetBrains Mono</div>
       <div class="typo-grid">
@@ -795,7 +1010,7 @@
 
   <!-- PALETTE -->
   <section>
-    <div class="container">
+    <div class="container fade-in">
       <div class="section-mono">// couleurs</div>
       <div class="section-title">Palette Minimal Tech</div>
       <div class="section-desc">Noir & blanc dominant. Le gradient bleu profond comme seul accent colore.</div>
@@ -839,7 +1054,7 @@
           <div class="swatch-color" style="background: linear-gradient(135deg, #0A0A0A, #1E3A5F, #2563EB);"></div>
           <div class="swatch-info">
             <div class="swatch-name">Accent gradient</div>
-            <div class="swatch-hex">#0A0A0A → #2563EB</div>
+            <div class="swatch-hex">#0A0A0A &rarr; #2563EB</div>
           </div>
         </div>
         <div class="swatch">
@@ -854,8 +1069,8 @@
   </section>
 
   <!-- COMPONENTS -->
-  <section class="components">
-    <div class="container">
+  <section class="components noise-section">
+    <div class="container fade-in">
       <div class="section-mono">// composants</div>
       <div class="section-title">Boutons, tags, inputs, cards</div>
 
@@ -892,8 +1107,8 @@
 
   <!-- CTA -->
   <div class="cta-outer">
-    <div class="cta-section">
-      <div class="section-mono" style="color: var(--text-tertiary); text-align: center;">// next step</div>
+    <div class="cta-section fade-in">
+      <div class="section-mono" style="color: var(--text-tertiary); text-align: center; position: relative; z-index: 1;">// next step</div>
       <h2>Pret a voir ou passe votre argent ?</h2>
       <p>30 minutes. On regarde vos chiffres, on identifie les fuites. C'est gratuit.</p>
       <a href="#" class="btn">Reserver mon audit &rarr;</a>
@@ -901,8 +1116,63 @@
   </div>
 
   <footer>
-    <p>antoine.works — prototype direction d "minimal tech" — ne pas diffuser</p>
+    <p>antoine.works — prototype direction d v2 "minimal tech + depth" — ne pas diffuser</p>
   </footer>
+
+  <!-- JS — Cursor + Scroll animations -->
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    let cursorX = 0, cursorY = 0;
+    let currentX = 0, currentY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
+    });
+
+    function animateCursor() {
+      currentX += (cursorX - currentX) * 0.15;
+      currentY += (cursorY - currentY) * 0.15;
+      cursor.style.left = currentX + 'px';
+      cursor.style.top = currentY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Cursor hover effect on interactive elements
+    const interactives = document.querySelectorAll('a, button, .btn, .pillar, .card-example, .swatch, .step, input');
+    interactives.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+
+    // Scroll reveal
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Animated metric bars on scroll
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bars = entry.target.querySelectorAll('.metric-bar-fill');
+          bars.forEach(bar => {
+            const w = bar.getAttribute('data-width');
+            setTimeout(() => { bar.style.width = w + '%'; }, 300);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    const heroCard = document.querySelector('.hero-card');
+    if (heroCard) barObserver.observe(heroCard);
+  </script>
 
 </body>
 </html>
