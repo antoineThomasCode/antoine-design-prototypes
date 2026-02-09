@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>antoine.works — Design Directions</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #111;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    p { color: #888; margin-bottom: 3rem; }
+    .cards { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    .card {
+      width: 320px;
+      border-radius: 12px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .card-preview {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .card-body { padding: 1.5rem; background: #1a1a1a; }
+    .card-body h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .card-body span { font-size: 0.85rem; color: #888; }
+
+    .card-a .card-preview { background: #FAFAF8; color: #1C1917; }
+    .card-b .card-preview { background: #0C0A09; color: #D4A574; border-bottom: 3px solid #1E3A8A; }
+    .card-c .card-preview { background: #FFFFFF; color: #0D9488; }
+  </style>
+</head>
+<body>
+  <h1>antoine.works</h1>
+  <p>3 directions visuelles — clique pour explorer chaque ambiance</p>
+  <div class="cards">
+    <a href="a-swiss-warm.html" class="card card-a">
+      <div class="card-preview">Swiss Warm</div>
+      <div class="card-body">
+        <h2>Direction A — Swiss Warm</h2>
+        <span>Grille stricte + chaleur terracotta + Geist Sans</span>
+      </div>
+    </a>
+    <a href="b-dark-authority.html" class="card card-b">
+      <div class="card-preview">Dark Authority</div>
+      <div class="card-body">
+        <h2>Direction B — Dark Authority</h2>
+        <span>Premium sombre + bleu/or + Suisse Int'l</span>
+      </div>
+    </a>
+    <a href="c-clean-craft.html" class="card card-c">
+      <div class="card-preview">Clean Craft</div>
+      <div class="card-body">
+        <h2>Direction C — Clean Craft</h2>
+        <span>Blanc lumineux + serif Playfair + teal</span>
+      </div>
+    </a>
+  </div>
+</body>
+</html>

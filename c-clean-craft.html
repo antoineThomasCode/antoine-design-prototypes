@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direction C — Clean Craft | antoine.works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       DIRECTION C — CLEAN CRAFT
+       Blanc lumineux + serif Playfair + teal
+       ============================================ */
+
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F7F7F5;
+      --surface: #FFFFFF;
+      --text: #1A1A1A;
+      --text-secondary: #6B7280;
+      --text-tertiary: #9CA3AF;
+      --accent: #0D9488;
+      --accent-hover: #0F766E;
+      --accent-light: rgba(13, 148, 136, 0.06);
+      --accent-warm: #F59E0B;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+      --radius: 10px;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ---- BUTTONS ---- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border-strong);
+    }
+    .btn-secondary:hover { background: var(--accent-light); border-color: var(--accent); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      padding: 0.5rem 0;
+      font-weight: 600;
+    }
+    .btn-ghost:hover { color: var(--accent-hover); }
+    .btn-lg { padding: 0.9rem 2rem; font-size: 1rem; border-radius: 12px; }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 11rem 2rem 6rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: 3.25rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      max-width: 460px;
+    }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; }
+
+    .hero-visual {
+      background: var(--bg-alt);
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+    }
+    .hero-visual .chart-placeholder {
+      height: 200px;
+      background: linear-gradient(180deg, var(--accent-light) 0%, transparent 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 1rem;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .chart-bar {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      transition: height 0.5s;
+    }
+    .chart-bar:nth-child(1) { background: var(--border); height: 30%; }
+    .chart-bar:nth-child(2) { background: var(--border); height: 25%; }
+    .chart-bar:nth-child(3) { background: var(--border); height: 45%; }
+    .chart-bar:nth-child(4) { background: var(--border); height: 35%; }
+    .chart-bar:nth-child(5) { background: var(--accent); height: 80%; }
+    .chart-bar:nth-child(6) { background: var(--accent); height: 95%; opacity: 0.7; }
+    .hero-visual .caption {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+    }
+    .hero-visual .result {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* ---- SECTIONS ---- */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-eyebrow .line {
+      width: 24px;
+      height: 1.5px;
+      background: var(--accent);
+    }
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      line-height: 1.75;
+    }
+
+    /* ---- CARDS ---- */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .pillar-card {
+      background: var(--bg-alt);
+      border-radius: 16px;
+      padding: 2.25rem;
+      transition: box-shadow 0.2s;
+    }
+    .pillar-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+    .pillar-card .icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.25rem;
+    }
+    .pillar-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .pillar-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ---- HITL PROCESS ---- */
+    .process-section { background: var(--bg-alt); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .p-step {
+      text-align: center;
+      position: relative;
+    }
+    .p-step .circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 1.25rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .p-step.active .circle {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-light);
+    }
+    .p-step h4 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+    }
+    .p-step p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    /* ---- TYPOGRAPHY ---- */
+    .typo-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .typo-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      margin-top: 3rem;
+    }
+    .typo-row { display: contents; }
+    .typo-row > * {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+    }
+    .typo-meta {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+    .t-h1 { font-family: var(--font-heading); font-size: 3.25rem; font-weight: 700; line-height: 1.15; }
+    .t-h2 { font-family: var(--font-heading); font-size: 2.5rem; font-weight: 700; line-height: 1.15; }
+    .t-h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; }
+    .t-body { font-family: var(--font-body); font-size: 1rem; color: var(--text-secondary); line-height: 1.75; }
+    .t-small { font-family: var(--font-body); font-size: 0.875rem; color: var(--text-secondary); }
+    .t-eyebrow { font-family: var(--font-body); font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+
+    /* ---- PALETTE ---- */
+    .palette {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      flex: 1;
+      min-width: 120px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .swatch-color { height: 100px; }
+    .swatch-info { padding: 0.75rem 1rem; }
+    .swatch-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .swatch-hex { font-family: monospace; font-size: 0.7rem; color: var(--text-tertiary); }
+
+    /* ---- TESTIMONIAL ---- */
+    .testimonial {
+      background: var(--bg-alt);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-top: 3rem;
+      max-width: 700px;
+    }
+    .testimonial blockquote {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.4;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    .testimonial .author {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    .testimonial .author strong { color: var(--text); }
+
+    /* ---- CTA ---- */
+    .cta-section {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 24px;
+      padding: 5rem 4rem;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .cta-section h2 {
+      font-family: var(--font-heading);
+      font-size: 2.75rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-section .btn {
+      background: #fff;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+    }
+    .cta-section .btn:hover { background: #f0fdf4; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+    }
+
+    .back-link {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      background: var(--text);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 100;
+      transition: opacity 0.15s;
+    }
+    .back-link:hover { opacity: 0.8; }
+
+    .direction-badge {
+      position: fixed;
+      top: 88px;
+      right: 2rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="direction-badge">Direction C — Clean Craft</div>
+  <a href="index.html" class="back-link">&larr; Toutes les directions</a>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">antoine<span>.</span>works</a>
+      <div class="nav-links">
+        <a href="#">Approche</a>
+        <a href="#">Simulateur</a>
+        <a href="#">Cas clients</a>
+        <a href="#" class="btn btn-primary">Audit gratuit</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero-tag">
+        <span class="dot"></span>
+        Consultant Growth + IA
+      </div>
+      <h1>Votre funnel <em>perd de l'argent</em>. Je le vois, je le prouve, on le corrige.</h1>
+      <p>Audit data, optimisation conversion et outils IA sur mesure pour TPE/PME. Vos donnees restent chez vous. Les resultats sont mesurables.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary btn-lg">Simuler mon ROI &rarr;</a>
+        <a href="#" class="btn btn-ghost">Voir un cas client &rarr;</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="chart-placeholder">
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+      </div>
+      <div class="caption">
+        <span>Avant intervention</span>
+        <span class="result">+454% ROI apres</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow"><span class="line"></span> Pourquoi travailler avec moi</div>
+      <div class="section-title">Quatre engagements concrets</div>
+      <div class="section-desc">Pas de buzzwords, pas de promesses vagues. Des piliers mesurables, verifiables, et conformes.</div>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="icon">&#x1F4C8;</div>
+          <h3>ROI mesurable</h3>
+          <p>Chaque euro est trace. Trois scenarios avec niveau de confiance. Pas de promesses en l'air — des chiffres.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="icon">&#x1F512;</div>
+          <h3>Donnees souveraines</h3>
+          <p>Hebergement France, RGPD natif, zero dependance cloud US. Vos donnees restent sous votre controle.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="icon">&#x1F9D1;</div>
+          <h3>Human in the Loop</h3>
+          <p>L'IA propose, vous decidez. Le combo humain + IA reduit les erreurs de 85%. Vous restez aux commandes.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="icon">&#x1F3DB;</div>
+          <h3>Conforme EU AI Act</h3>
+          <p>L'article 14 impose la supervision humaine. Mon approche vous met en conformite avant aout 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HITL PROCESS -->
+  <section class="process-section">
+    <div class="container">
+      <div class="section-eyebrow"><span class="line"></span> Processus Human in the Loop</div>
+      <div class="section-title">L'IA travaille, vous decidez</div>
+      <div class="section-desc">Conforme EU AI Act. Chaque etape inclut un checkpoint humain.</div>
+      <div class="process-steps">
+        <div class="p-step">
+          <div class="circle">&#x1F916;</div>
+          <h4>Analyse IA</h4>
+          <p>Vos donnees sont traitees automatiquement</p>
+        </div>
+        <div class="p-step">
+          <div class="circle">&#x1F4CA;</div>
+          <h4>Recommandation</h4>
+          <p>Propositions chiffrees avec confiance</p>
+        </div>
+        <div class="p-step active">
+          <div class="circle">&#x1F44D;</div>
+          <h4>Vous validez</h4>
+          <p>Rien ne bouge sans votre accord</p>
+        </div>
+        <div class="p-step">
+          <div class="circle">&#x1F680;</div>
+          <h4>Execution</h4>
+          <p>L'IA applique votre decision</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow"><span class="line"></span> Retour client</div>
+      <div class="section-title">Ce qu'ils en disent</div>
+      <div class="testimonial">
+        <blockquote>"On est passe de 1.2% a 6.65% de conversion. C'est la premiere fois qu'un prestataire me montre les chiffres AVANT de me vendre quelque chose."</blockquote>
+        <div class="author"><strong>Client Smartduck</strong> — Franchise, 5 points de vente</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section class="typo-section">
+    <div class="container">
+      <div class="section-eyebrow"><span class="line"></span> Typographie</div>
+      <div class="section-title">Playfair Display + Inter</div>
+      <div class="typo-grid">
+        <div class="typo-row">
+          <div class="typo-meta">H1 — Playfair<br>52/700</div>
+          <div class="t-h1">Votre funnel perd de l'argent</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">H2 — Playfair<br>40/700</div>
+          <div class="t-h2">Quatre engagements concrets</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">H3 — Playfair<br>24/700</div>
+          <div class="t-h3">ROI mesurable des le premier mois</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">Body — Inter<br>16/400 1.75lh</div>
+          <div class="t-body">Chaque action est tracee. On ne promet pas, on mesure. Trois scenarios pour chaque projection financiere.</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">Small — Inter<br>14/400</div>
+          <div class="t-small">Hebergement France, donnees RGPD natif, audit inclus</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">Eyebrow — Inter<br>14/500 + ligne</div>
+          <div class="t-eyebrow"><span style="display:inline-block;width:24px;height:1.5px;background:var(--accent);margin-right:8px;vertical-align:middle;"></span>Consultant Growth + IA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PALETTE -->
+  <section>
+    <div class="container">
+      <div class="section-eyebrow"><span class="line"></span> Couleurs</div>
+      <div class="section-title">Palette Clean Craft</div>
+      <div class="palette">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #FFFFFF; border-bottom: 1px solid #E5E7EB;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Fond principal</div>
+            <div class="swatch-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #F7F7F5;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Fond alternatif</div>
+            <div class="swatch-hex">#F7F7F5</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #1A1A1A;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Texte</div>
+            <div class="swatch-hex">#1A1A1A</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #6B7280;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Texte secondaire</div>
+            <div class="swatch-hex">#6B7280</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #0D9488;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Accent teal</div>
+            <div class="swatch-hex">#0D9488</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #E5E7EB;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Bordure</div>
+            <div class="swatch-hex">#E5E7EB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-eyebrow"><span class="line"></span> Composants</div>
+      <div class="section-title">Boutons & interactions</div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; align-items: center;">
+        <a href="#" class="btn btn-primary btn-lg">Primary Large &rarr;</a>
+        <a href="#" class="btn btn-primary">Primary Default</a>
+        <a href="#" class="btn btn-secondary">Secondary</a>
+        <a href="#" class="btn btn-ghost">Ghost link &rarr;</a>
+      </div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; align-items: center;">
+        <div style="background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 0.9rem; color: var(--text-tertiary); width: 320px;">
+          votre-email@entreprise.fr
+        </div>
+        <span style="font-size: 0.8rem; color: var(--text-tertiary);">Input field</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding-bottom: 2rem;">
+    <div class="cta-section">
+      <h2>Pret a voir ou passe votre argent ?</h2>
+      <p>30 minutes d'audit gratuit. On regarde ensemble vos chiffres, on identifie les fuites.</p>
+      <a href="#" class="btn">Reserver mon audit &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>antoine.works — Prototype Direction C "Clean Craft" — Ne pas diffuser</p>
+  </footer>
+
+</body>
+</html>

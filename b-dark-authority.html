@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direction B — Dark Authority | antoine.works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       DIRECTION B — DARK AUTHORITY
+       Premium sombre + bleu/or + rigeur technique
+       ============================================ */
+
+    :root {
+      --bg: #0C0A09;
+      --bg-alt: #141210;
+      --surface: #1C1917;
+      --surface-hover: #292524;
+      --text: #FAFAF9;
+      --text-secondary: #A8A29E;
+      --text-tertiary: #57534E;
+      --accent-blue: #3B82F6;
+      --accent-blue-hover: #2563EB;
+      --accent-gold: #D4A574;
+      --accent-gold-dim: rgba(212, 165, 116, 0.1);
+      --border: #292524;
+      --border-strong: #44403C;
+      --radius: 8px;
+      --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(12, 10, 9, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent-gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ---- BUTTONS ---- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-blue-hover); }
+    .btn-gold {
+      background: var(--accent-gold);
+      color: var(--bg);
+      font-weight: 700;
+    }
+    .btn-gold:hover { background: #C49462; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+    }
+    .btn-secondary:hover { background: var(--surface); border-color: var(--accent-gold); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 0.5rem 0.75rem;
+    }
+    .btn-ghost:hover { color: var(--accent-gold); }
+    .btn-lg { padding: 0.875rem 1.75rem; font-size: 1rem; }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 10rem 2rem 6rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-overline {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent-gold);
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 5rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-metric {
+      background: var(--surface);
+      padding: 2rem;
+      text-align: center;
+    }
+    .hero-metric .value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--accent-gold);
+    }
+    .hero-metric .label {
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- SECTION ---- */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ---- BENTO GRID ---- */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.2s;
+    }
+    .bento-card:hover { border-color: var(--border-strong); }
+    .bento-card.wide { grid-column: span 2; }
+    .bento-card .icon {
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+    }
+    .bento-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .bento-card p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .bento-card .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.1);
+      padding: 0.25rem 0.625rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    /* ---- HITL PROCESS ---- */
+    .process-section { border-top: 1px solid var(--border); }
+    .process-timeline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .process-timeline::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+    }
+    .process-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .process-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      margin: 20px auto 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .process-step.active .process-dot {
+      background: var(--accent-gold);
+      box-shadow: 0 0 20px rgba(212, 165, 116, 0.3);
+    }
+    .process-step .number {
+      font-family: monospace;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.1em;
+    }
+    .process-step h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+      letter-spacing: -0.01em;
+    }
+    .process-step p {
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+      max-width: 180px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* ---- TYPOGRAPHY SPECIMEN ---- */
+    .typo-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .typo-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      margin-top: 3rem;
+    }
+    .typo-row { display: contents; }
+    .typo-row > * {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+    }
+    .typo-meta {
+      font-family: monospace;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+    }
+    .t-h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; }
+    .t-h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; }
+    .t-h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+    .t-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
+    .t-small { font-size: 0.875rem; color: var(--text-secondary); }
+    .t-overline { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent-gold); font-weight: 600; }
+
+    /* ---- COLOR PALETTE ---- */
+    .palette {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      flex: 1;
+      min-width: 120px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .swatch-color { height: 100px; }
+    .swatch-info { padding: 0.75rem 1rem; background: var(--surface); }
+    .swatch-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .swatch-hex { font-family: monospace; font-size: 0.7rem; color: var(--text-tertiary); }
+
+    /* ---- CTA ---- */
+    .cta-section {
+      background: linear-gradient(135deg, #1E3A8A 0%, #0C0A09 60%, var(--surface) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5rem 4rem;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .cta-section h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+    }
+
+    /* ---- BACK LINK ---- */
+    .back-link {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 100;
+      transition: border-color 0.15s;
+    }
+    .back-link:hover { border-color: var(--accent-gold); }
+
+    .direction-badge {
+      position: fixed;
+      top: 80px;
+      right: 2rem;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-gold));
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="direction-badge">Direction B — Dark Authority</div>
+  <a href="index.html" class="back-link">&larr; Toutes les directions</a>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">antoine<span>.</span>works</a>
+      <div class="nav-links">
+        <a href="#">Approche</a>
+        <a href="#">Simulateur</a>
+        <a href="#">Cas clients</a>
+        <a href="#" class="btn btn-gold">Audit gratuit</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-overline">Consultant Growth + Intelligence Artificielle</div>
+    <h1>Votre funnel <span class="gradient">perd de l'argent</span>.<br>Je le prouve en 30 minutes.</h1>
+    <p>Audit data, optimisation conversion et outils IA sur mesure. Donnees souveraines, resultats mesurables, humain aux commandes.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-gold btn-lg">Simuler mon ROI &rarr;</a>
+      <a href="#" class="btn btn-secondary btn-lg">Voir un cas client</a>
+    </div>
+    <div class="hero-metrics">
+      <div class="hero-metric">
+        <div class="value">+454%</div>
+        <div class="label">ROI moyen</div>
+      </div>
+      <div class="hero-metric">
+        <div class="value">6.65%</div>
+        <div class="label">Taux conversion</div>
+      </div>
+      <div class="hero-metric">
+        <div class="value">30 min</div>
+        <div class="label">Audit gratuit</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO PILLARS -->
+  <section>
+    <div class="container">
+      <div class="section-label">Methodologie</div>
+      <div class="section-title">Quatre piliers. Aucun compromis.</div>
+      <div class="bento">
+        <div class="bento-card wide">
+          <div class="tag">Pilier #1</div>
+          <div class="icon">&#x1F4C8;</div>
+          <h3>ROI mesurable des le premier mois</h3>
+          <p>Chaque euro investi est trace, chaque action justifiee par la data. Trois scenarios — pessimiste, realiste, optimiste — avec le niveau de confiance associe. Pas de promesses en l'air.</p>
+        </div>
+        <div class="bento-card">
+          <div class="tag">Pilier #2</div>
+          <div class="icon">&#x1F512;</div>
+          <h3>Donnees souveraines</h3>
+          <p>Hebergement France, RGPD natif, zero dependance cloud US.</p>
+        </div>
+        <div class="bento-card">
+          <div class="tag">Pilier #3</div>
+          <div class="icon">&#x1F9D1;</div>
+          <h3>Human in the Loop</h3>
+          <p>L'IA propose, vous decidez. -85% d'erreurs en mode hybride.</p>
+        </div>
+        <div class="bento-card wide">
+          <div class="tag">EU AI Act</div>
+          <div class="icon">&#x1F3DB;</div>
+          <h3>Conforme avant l'echeance d'aout 2026</h3>
+          <p>L'article 14 de l'EU AI Act impose la supervision humaine. Mon approche vous met en conformite avant meme que la loi l'exige. RGPD natif + EU AI Act ready + Human in the Loop = triptyque de confiance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HITL PROCESS -->
+  <section class="process-section">
+    <div class="container">
+      <div class="section-label">Processus</div>
+      <div class="section-title">L'IA travaille. Vous decidez.</div>
+      <div class="section-desc">Chaque etape du processus inclut un point de controle humain.</div>
+      <div class="process-timeline">
+        <div class="process-step">
+          <div class="number">01</div>
+          <div class="process-dot"></div>
+          <h4>Analyse IA</h4>
+          <p>Vos donnees sont traitees automatiquement</p>
+        </div>
+        <div class="process-step">
+          <div class="number">02</div>
+          <div class="process-dot"></div>
+          <h4>Recommandation</h4>
+          <p>Propositions chiffrees avec confiance</p>
+        </div>
+        <div class="process-step active">
+          <div class="number">03</div>
+          <div class="process-dot"></div>
+          <h4>Validation humaine</h4>
+          <p>Rien ne bouge sans votre accord</p>
+        </div>
+        <div class="process-step">
+          <div class="number">04</div>
+          <div class="process-dot"></div>
+          <h4>Execution</h4>
+          <p>L'IA applique votre decision</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section class="typo-section">
+    <div class="container">
+      <div class="section-label">Typographie</div>
+      <div class="section-title">Inter Variable — Dark Mode</div>
+      <div class="typo-grid">
+        <div class="typo-row">
+          <div class="typo-meta">H1 — 72/800<br>-0.04em</div>
+          <div class="t-h1">Votre funnel perd</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">H2 — 40/800<br>-0.035em</div>
+          <div class="t-h2">Quatre piliers. Aucun compromis.</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">H3 — 24/700<br>-0.02em</div>
+          <div class="t-h3">ROI mesurable des le premier mois</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">Body — 16/400</div>
+          <div class="t-body">Chaque action est tracee et justifiee. On ne promet pas, on mesure.</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">Small — 14/400</div>
+          <div class="t-small">Hebergement France, donnees RGPD natif</div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-meta">Overline — 11/600<br>uppercase 0.2em</div>
+          <div class="t-overline">Consultant Growth + Intelligence Artificielle</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLORS -->
+  <section>
+    <div class="container">
+      <div class="section-label">Couleurs</div>
+      <div class="section-title">Palette Dark Authority</div>
+      <div class="palette">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #0C0A09;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Fond principal</div>
+            <div class="swatch-hex">#0C0A09</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #1C1917;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Surface</div>
+            <div class="swatch-hex">#1C1917</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #FAFAF9;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Texte</div>
+            <div class="swatch-hex">#FAFAF9</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #3B82F6;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Accent bleu</div>
+            <div class="swatch-hex">#3B82F6</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #D4A574;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Accent or</div>
+            <div class="swatch-hex">#D4A574</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #292524;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Bordure</div>
+            <div class="swatch-hex">#292524</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section style="border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-label">Composants</div>
+      <div class="section-title">Boutons & interactions</div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; align-items: center;">
+        <a href="#" class="btn btn-gold btn-lg">Gold Primary &rarr;</a>
+        <a href="#" class="btn btn-primary btn-lg">Blue Primary</a>
+        <a href="#" class="btn btn-primary">Blue Default</a>
+        <a href="#" class="btn btn-secondary">Secondary</a>
+        <a href="#" class="btn btn-ghost">Ghost &rarr;</a>
+      </div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; align-items: center;">
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--text-tertiary); width: 300px;">
+          votre-email@entreprise.fr
+        </div>
+        <span style="font-size: 0.8rem; color: var(--text-tertiary);">Input field</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="cta-section">
+      <h2>Pret a reprendre le controle ?</h2>
+      <p>30 minutes d'audit. On regarde vos chiffres, on trouve les fuites. C'est gratuit.</p>
+      <a href="#" class="btn btn-gold btn-lg">Reserver mon audit &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>antoine.works — Prototype Direction B "Dark Authority" — Ne pas diffuser</p>
+  </footer>
+
+</body>
+</html>
