@@ -121,34 +121,33 @@
       display: flex; align-items: center; justify-content: space-between;
       height: 44px;
     }
-    .logo {
+    /* Logo-Switch — logo + domain toggle fused */
+    .logo-switch {
+      display: flex; align-items: center; gap: 0; text-decoration: none;
+    }
+    .logo-fixed {
       font-weight: 600; font-size: 0.875rem; letter-spacing: -0.03em;
-      color: var(--text); text-decoration: none;
-      display: flex; align-items: center; gap: 1px;
+      color: var(--text); line-height: 1;
     }
-    .logo .dot {
-      display: inline-block; width: 5px; height: 5px;
-      background: var(--corail); border-radius: 50%; margin: 0 1px;
-      position: relative; top: 1px;
+    .logo-toggle {
+      display: inline-flex; align-items: center;
+      background: rgba(0,0,0,0.05); border-radius: 100px; padding: 2px;
+      margin-left: 0;
     }
-
-    /* Domain Switch — pill style */
-    .domain-switch {
-      display: flex; align-items: center;
-      background: rgba(0,0,0,0.04); border-radius: 100px; padding: 2px;
+    .logo-toggle a {
+      font-size: 0.8125rem; font-weight: 600; letter-spacing: -0.02em;
+      padding: 4px 10px; border-radius: 100px; text-decoration: none;
+      color: var(--text-tertiary); transition: all 0.2s; line-height: 1.2;
     }
-    .domain-switch a {
-      font-size: 0.6875rem; font-weight: 600; letter-spacing: -0.01em;
-      padding: 5px 12px; border-radius: 100px; text-decoration: none;
-      color: var(--text-tertiary); transition: all 0.2s;
-    }
-    .domain-switch a.active {
+    .logo-toggle a.active {
       background: var(--bg-card); color: var(--text);
-      box-shadow: 0 0.5px 2px rgba(0,0,0,0.08);
+      box-shadow: 0 0.5px 2px rgba(0,0,0,0.1);
     }
-    .domain-switch .sep { width: 0.5px; height: 12px; background: rgba(0,0,0,0.1); }
+    .logo-toggle .sep {
+      width: 0.5px; height: 12px; background: rgba(0,0,0,0.1); flex-shrink: 0;
+    }
 
-    .nav-links { display: flex; align-items: center; gap: 12px; }
+    /* nav-links removed — logo-switch replaces domain switch */
     .nav-cta {
       background: var(--warm-gradient); color: #fff;
       font-size: 0.6875rem; font-weight: 600; padding: 6px 14px;
@@ -538,15 +537,15 @@
   <!-- NAV -->
   <nav>
     <div class="nav-inner">
-      <a href="#" class="logo">antoine<span class="dot"></span>life</a>
-      <div class="nav-links">
-        <div class="domain-switch">
-          <a href="lp-demo.html">.works</a>
+      <div class="logo-switch">
+        <span class="logo-fixed">antoine.</span>
+        <div class="logo-toggle">
+          <a href="lp-demo.html">works</a>
           <span class="sep"></span>
-          <a href="lp-life.html" class="active">.life</a>
+          <a href="lp-life.html" class="active">life</a>
         </div>
-        <a href="#connect" class="nav-cta">Salut</a>
       </div>
+      <a href="#connect" class="nav-cta">Salut</a>
     </div>
   </nav>
 
