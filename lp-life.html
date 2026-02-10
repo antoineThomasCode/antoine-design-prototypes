@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>antoine.life — Behind the screen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAFAF8;
+      --bg-warm: #F5F0EB;
+      --bg-card: #FFFFFF;
+      --text: #1C1917;
+      --text-secondary: #78716C;
+      --text-tertiary: #A8A29E;
+      --accent-warm: #C2410C;
+      --accent-warm-light: rgba(194, 65, 12, 0.08);
+      --accent-gradient: linear-gradient(135deg, #C2410C 0%, #EA580C 50%, #F59E0B 100%);
+      --accent-gradient-subtle: linear-gradient(135deg, rgba(194,65,12,0.06) 0%, rgba(245,158,11,0.06) 100%);
+      --border: #E7E5E4;
+      --border-subtle: #F0EEEC;
+      --radius: 8px;
+      --radius-lg: 14px;
+      --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --font-serif: 'Newsreader', Georgia, serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* ---- CURSOR ---- */
+    .cursor-dot {
+      width: 6px; height: 6px; background: #fff; border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 10000;
+      transform: translate(-50%, -50%); mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px; border: 1.5px solid #fff; border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%); mix-blend-mode: difference;
+      transition: width 0.25s cubic-bezier(0.34,1.56,0.64,1), height 0.25s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, border-width 0.2s;
+      background: transparent;
+    }
+    .cursor-ring.hovering { width: 52px; height: 52px; background: rgba(255,255,255,0.12); border-width: 2px; }
+    .cursor-ring.hovering-cta { width: 64px; height: 64px; background: rgba(255,255,255,0.15); border-width: 2px; }
+    a, button, .btn, .card, .tag-pill { cursor: none; }
+    @media (pointer: coarse) { .cursor-dot, .cursor-ring { display: none !important; } body, a, button, .btn { cursor: auto !important; } }
+    @media (prefers-reduced-motion: reduce) { .cursor-ring { transition: none; } }
+
+    /* ---- NOISE ---- */
+    .noise::after {
+      content: ''; position: absolute; inset: 0; opacity: 0.03; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
+    .noise { position: relative; }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100; padding: 0 2rem;
+      background: rgba(250,250,248,0.7); backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .nav-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .logo { font-weight: 600; font-size: 0.95rem; letter-spacing: -0.03em; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 0.125rem; }
+    .logo .dot { display: inline-block; width: 6px; height: 6px; background: var(--accent-warm); border-radius: 50%; margin: 0 1px; position: relative; top: 1px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s; }
+    .logo:hover .dot { transform: scale(1.6); box-shadow: 0 0 12px rgba(194,65,12,0.4); }
+    .nav-links { display: flex; gap: 1.75rem; align-items: center; }
+    .nav-links a { font-size: 0.825rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.15s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ---- DOMAIN SWITCH ---- */
+    .domain-switch {
+      display: flex;
+      align-items: center;
+      background: rgba(0,0,0,0.04);
+      border-radius: 100px;
+      padding: 3px;
+      gap: 0;
+      position: relative;
+    }
+    .domain-switch a {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .domain-switch a:hover { color: var(--text); }
+    .domain-switch a.active {
+      background: var(--bg-card);
+      color: var(--text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .domain-switch .separator {
+      width: 1px;
+      height: 14px;
+      background: rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      font-family: var(--font-sans); font-weight: 500; font-size: 0.825rem;
+      padding: 0.55rem 1.15rem; border-radius: var(--radius); border: none; cursor: none;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1); text-decoration: none; letter-spacing: -0.01em;
+    }
+    .btn-warm { background: var(--accent-gradient); color: #fff; box-shadow: 0 1px 3px rgba(194,65,12,0.15); }
+    .btn-warm:hover { box-shadow: 0 8px 25px rgba(194,65,12,0.2); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: #D6D3D1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); transform: translateY(-0.5px); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); padding: 0.5rem 0; }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-ghost .arrow { transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); display: inline-block; }
+    .btn-ghost:hover .arrow { transform: translateX(4px); }
+    .btn-lg { padding: 0.7rem 1.5rem; font-size: 0.875rem; border-radius: 10px; }
+
+    /* ---- SECTIONS ---- */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .section-mono { font-family: var(--font-mono); font-size: 0.675rem; font-weight: 500; color: var(--text-tertiary); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.75rem; }
+
+    /* ---- FADE IN ---- */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+
+    /* ============ HERO — LIFE ============ */
+    .hero-life {
+      padding: 10rem 2rem 5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-life .greeting {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--accent-warm);
+      margin-bottom: 1rem;
+      letter-spacing: 0.01em;
+    }
+    .hero-life h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-life h1 .serif-accent {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+    .hero-life h1 .warm-shimmer {
+      background: linear-gradient(105deg, #1C1917 0%, #1C1917 40%, #C2410C 50%, #1C1917 60%, #1C1917 100%);
+      background-size: 250% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: shimmer 6s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100%{background-position:100% 0} 50%{background-position:0% 0} }
+    .hero-life .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 2rem;
+    }
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.625rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.5rem 1.25rem 0.5rem 0.75rem;
+      font-size: 0.775rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .hero-status .location-pin {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .hero-status .blink {
+      width: 6px; height: 6px; background: #22C55E; border-radius: 50%;
+      animation: blink 3s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ============ NOW SECTION — What I'm up to ============ */
+    .now-section { background: var(--bg-card); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+    .now-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2.5rem;
+    }
+    .now-card {
+      padding: 0;
+    }
+    .now-card h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .now-card h3 .emoji { font-style: normal; font-size: 1.1rem; }
+    .now-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .now-card .now-meta {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--text-tertiary);
+      margin-top: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .now-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 0.75rem;
+    }
+    .now-header .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+    .now-header .last-updated {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============ BLOG / WRITINGS ============ */
+    .writings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    .writing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+    .writing-card:hover {
+      border-color: #D6D3D1;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+      transform: translateY(-2px);
+    }
+    .writing-card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .writing-card.featured::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 2rem; right: 2rem; height: 2px;
+      background: var(--accent-gradient); border-radius: 0 0 2px 2px;
+    }
+    .writing-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-tertiary);
+      margin-bottom: 0.75rem;
+    }
+    .writing-tag .dot {
+      width: 4px; height: 4px; border-radius: 50%;
+    }
+    .writing-tag .dot.orange { background: var(--accent-warm); }
+    .writing-tag .dot.green { background: #16A34A; }
+    .writing-tag .dot.blue { background: #2563EB; }
+    .writing-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+    .writing-card.featured h3 { font-size: 1.35rem; }
+    .writing-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .writing-card .read-time {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--text-tertiary);
+    }
+    .writing-card .read-link {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent-warm);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .writing-card .read-link .arrow { transition: transform 0.2s; display: inline-block; }
+    .writing-card:hover .read-link .arrow { transform: translateX(3px); }
+
+    /* Featured card visual area */
+    .featured-visual {
+      background: var(--bg-warm);
+      border-radius: 10px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .featured-visual .map-text {
+      font-family: var(--font-mono);
+      font-size: 2.5rem;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      opacity: 0.12;
+    }
+    .featured-visual .pin {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: var(--accent-warm);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(194,65,12,0.15);
+      animation: pingPin 3s ease-in-out infinite;
+    }
+    @keyframes pingPin {
+      0%,100% { box-shadow: 0 0 0 3px rgba(194,65,12,0.15); }
+      50% { box-shadow: 0 0 0 8px rgba(194,65,12,0.05); }
+    }
+    .featured-visual .pin-paris { top: 40%; left: 35%; }
+    .featured-visual .pin-hcmc { top: 55%; left: 72%; animation-delay: 1s; }
+    .featured-visual .route {
+      position: absolute;
+      top: 42%; left: 36%;
+      width: 36%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-warm), transparent 30%, transparent 70%, var(--accent-warm));
+      opacity: 0.3;
+      transform: rotate(5deg);
+    }
+
+    /* ============ STACK / TOOLS ============ */
+    .stack-section { background: var(--bg-card); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+    .stack-grid {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .stack-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.4rem 0.875rem 0.4rem 0.625rem;
+      font-size: 0.775rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .stack-item:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+    .stack-item .icon {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      background: var(--bg-warm);
+    }
+
+    /* ============ VALUES / BELIEFS ============ */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 2.5rem;
+    }
+    .value-item {
+      background: var(--bg);
+      padding: 2rem 1.5rem;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .value-item:hover { background: var(--bg-card); }
+    .value-item::after {
+      content: '';
+      position: absolute; bottom: 0; left: 1.5rem; right: 1.5rem; height: 2px;
+      background: var(--accent-gradient); opacity: 0; transition: opacity 0.25s;
+    }
+    .value-item:hover::after { opacity: 1; }
+    .value-item .value-quote {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .value-item p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============ PHOTO STRIP ============ */
+    .photo-strip {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding: 2rem 0;
+      margin-top: 2rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .photo-strip::-webkit-scrollbar { display: none; }
+    .photo-frame {
+      flex-shrink: 0;
+      width: 260px;
+      height: 340px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      scroll-snap-align: start;
+      position: relative;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .photo-frame .photo-placeholder {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      opacity: 0.15;
+    }
+    .photo-frame .photo-caption {
+      padding: 0.875rem 1rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-subtle);
+    }
+    .photo-caption .place {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .photo-caption .date {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-tertiary);
+      margin-top: 0.15rem;
+    }
+
+    /* ============ CONNECT / CTA ============ */
+    .connect-outer { padding: 2rem 2rem 4rem; }
+    .connect-section {
+      background: var(--text);
+      color: #FAFAF8;
+      border-radius: 20px;
+      padding: 4.5rem;
+      text-align: center;
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .connect-section::before {
+      content: '';
+      position: absolute; top: -50%; right: -20%; width: 60%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(194,65,12,0.1) 0%, transparent 55%);
+      animation: warmGlow 6s ease-in-out infinite;
+    }
+    @keyframes warmGlow { 0%,100%{transform:translate(0,0);opacity:0.6} 50%{transform:translate(-5%,5%);opacity:1} }
+    .connect-section::after {
+      content: '';
+      position: absolute; bottom: -30%; left: -10%; width: 40%; height: 150%;
+      background: radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 50%);
+    }
+    .connect-section h2 {
+      font-size: 2.25rem; font-weight: 700; letter-spacing: -0.035em;
+      margin-bottom: 0.75rem; position: relative; z-index: 1;
+    }
+    .connect-section h2 .serif-accent {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-style: italic;
+    }
+    .connect-section p {
+      color: var(--text-tertiary); font-size: 0.95rem; margin-bottom: 2rem;
+      position: relative; z-index: 1; max-width: 440px; margin-left: auto; margin-right: auto;
+    }
+    .connect-links {
+      display: flex;
+      gap: 0.625rem;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+    .connect-links a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius);
+      font-size: 0.825rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .connect-links .btn-connect-primary {
+      background: #fff; color: var(--text);
+    }
+    .connect-links .btn-connect-primary:hover { box-shadow: 0 8px 24px rgba(255,255,255,0.12); transform: translateY(-1px); }
+    .connect-links .btn-connect-ghost {
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .connect-links .btn-connect-ghost:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    /* ============ FOOTER ============ */
+    footer { padding: 3rem 2rem; text-align: center; }
+    footer p { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-tertiary); }
+
+    .back-link { position: fixed; bottom: 1.5rem; left: 1.5rem; background: var(--text); color: #FAFAF8; padding: 0.4rem 0.875rem; border-radius: 100px; font-size: 0.75rem; font-weight: 500; text-decoration: none; z-index: 100; cursor: none; transition: all 0.2s; }
+    .back-link:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); transform: translateY(-1px); }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 768px) {
+      body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; }
+      a, button, .btn, .card, .tag-pill { cursor: auto; }
+      .hero-life { padding-top: 7rem; }
+      .hero-life h1 { font-size: 2.25rem; }
+      .now-grid { grid-template-columns: 1fr; }
+      .writings-grid { grid-template-columns: 1fr; }
+      .writing-card.featured { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+      .connect-section { padding: 3rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <a href="index.html" class="back-link">&larr; Prototypes</a>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">antoine<span class="dot"></span>life</a>
+      <div class="nav-links">
+        <!-- DOMAIN SWITCH -->
+        <div class="domain-switch">
+          <a href="lp-demo.html">.works</a>
+          <span class="separator"></span>
+          <a href="lp-life.html" class="active">.life</a>
+        </div>
+        <a href="#now">Now</a>
+        <a href="#writings">Ecrits</a>
+        <a href="#connect" class="btn btn-warm" style="font-size:0.775rem; padding: 0.4rem 0.875rem;">Dire bonjour</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero-life">
+    <div class="hero-status fade-in">
+      <span class="blink"></span>
+      <span class="location-pin">Paris, France</span>
+      <span style="color:var(--text-tertiary);">&rarr; bientot Ho Chi Minh</span>
+    </div>
+    <div class="greeting fade-in fade-in-delay-1">Salut, moi c'est</div>
+    <h1 class="fade-in fade-in-delay-2">
+      <span class="warm-shimmer">Antoine.</span><br>
+      <span class="serif-accent">Freelance, nomade, curieux.</span>
+    </h1>
+    <p class="subtitle fade-in fade-in-delay-3">
+      Je construis des trucs sur internet, je vis dans des valises,<br>
+      et j'ecris sur ce qui se passe entre les deux.
+    </p>
+  </section>
+
+  <!-- ============ NOW ============ -->
+  <section class="now-section" id="now">
+    <div class="container">
+      <div class="now-header fade-in">
+        <div>
+          <div class="section-mono">// now</div>
+          <div class="section-title">Ce qui m'occupe en ce moment.</div>
+        </div>
+        <div class="last-updated">mis a jour : fev. 2026</div>
+      </div>
+      <div class="now-grid">
+        <div class="now-card fade-in fade-in-delay-1">
+          <h3><span class="emoji">&#128187;</span> Boulot</h3>
+          <p>Consultant growth + IA pour TPE/PME francaises. J'aide les patrons a arreter de perdre de l'argent sur leur funnel. Claude Code est mon bras droit.</p>
+          <div class="now-meta">antoine.works &rarr;</div>
+        </div>
+        <div class="now-card fade-in fade-in-delay-2">
+          <h3><span class="emoji">&#9992;&#65039;</span> Prochaine etape</h3>
+          <p>Ho Chi Minh Ville, juillet 2026. Transition SASU, nouveau chapitre. 8 mois de freelance a Paris d'abord, histoire de partir sereinement.</p>
+          <div class="now-meta">countdown : ~5 mois</div>
+        </div>
+        <div class="now-card fade-in fade-in-delay-1">
+          <h3><span class="emoji">&#128218;</span> Apprentissage</h3>
+          <p>Deep-dive dans l'IA generative, les agents autonomes, et comment tout ca va changer le freelance. Aussi : apprendre a cuisiner un pho correct.</p>
+          <div class="now-meta">en cours</div>
+        </div>
+        <div class="now-card fade-in fade-in-delay-2">
+          <h3><span class="emoji">&#127911;</span> Dans mes oreilles</h3>
+          <p>Podcasts business FR, beats lo-fi pour bosser, et une playlist Vietnam que je construis depuis 3 mois. Conseil : ecoutez Podcast de Pauline Laigneau.</p>
+          <div class="now-meta">spotify addict</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHOTO STRIP ============ -->
+  <section style="padding-bottom: 2rem;">
+    <div class="container fade-in">
+      <div class="section-mono">// fragments</div>
+      <div class="photo-strip">
+        <div class="photo-frame">
+          <div class="photo-placeholder">&#127987;</div>
+          <div class="photo-caption">
+            <div class="place">Cafe parisien, laptop ouvert</div>
+            <div class="date">jan. 2026</div>
+          </div>
+        </div>
+        <div class="photo-frame">
+          <div class="photo-placeholder">&#128747;</div>
+          <div class="photo-caption">
+            <div class="place">Vue d'avion, quelque part</div>
+            <div class="date">dec. 2025</div>
+          </div>
+        </div>
+        <div class="photo-frame">
+          <div class="photo-placeholder">&#127843;</div>
+          <div class="photo-caption">
+            <div class="place">Street food, premier test</div>
+            <div class="date">nov. 2025</div>
+          </div>
+        </div>
+        <div class="photo-frame">
+          <div class="photo-placeholder">&#128187;</div>
+          <div class="photo-caption">
+            <div class="place">Setup nomade, cowork</div>
+            <div class="date">oct. 2025</div>
+          </div>
+        </div>
+        <div class="photo-frame">
+          <div class="photo-placeholder">&#127749;</div>
+          <div class="photo-caption">
+            <div class="place">Sunset, rooftop random</div>
+            <div class="date">sept. 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WRITINGS ============ -->
+  <section id="writings">
+    <div class="container">
+      <div class="fade-in">
+        <div class="section-mono">// ecrits</div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.5rem;">
+          <div>
+            <div style="font-size: 2rem; font-weight: 700; letter-spacing: -0.035em; line-height: 1.15;">Le blog <span style="font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--text-secondary);">sans filtre.</span></div>
+          </div>
+          <a href="#" class="btn-ghost" style="font-size: 0.825rem;">Tous les articles <span class="arrow">&rarr;</span></a>
+        </div>
+        <p style="font-size:0.95rem;color:var(--text-secondary);max-width:520px;line-height:1.7;margin-bottom:0.5rem;">Digital nomadisme, freelance en vrai, tech, et les trucs qui me passent par la tete.</p>
+      </div>
+
+      <div class="writings-grid">
+        <!-- Featured -->
+        <a href="#" class="writing-card featured fade-in">
+          <div>
+            <div class="writing-tag"><span class="dot orange"></span> digital nomade</div>
+            <h3>Ho Chi Minh en juillet : pourquoi j'ai choisi le Vietnam et pas Bali comme tout le monde.</h3>
+            <p>Tout le monde part a Bali. C'est devenu le Starbucks du nomadisme. Moi je veux le pho a 1€ et les scooters dans tous les sens. Voila pourquoi.</p>
+            <span class="read-link">Lire l'article <span class="arrow">&rarr;</span></span>
+          </div>
+          <div class="featured-visual">
+            <div class="map-text">PAR &rarr; SGN</div>
+            <div class="pin pin-paris"></div>
+            <div class="pin pin-hcmc"></div>
+            <div class="route"></div>
+          </div>
+        </a>
+
+        <!-- Regular cards -->
+        <a href="#" class="writing-card fade-in fade-in-delay-1">
+          <div class="writing-tag"><span class="dot green"></span> freelance</div>
+          <h3>Freelance sur Instagram vs freelance en vrai : le reality check.</h3>
+          <p>Les stories Notion esthetiques, le MacBook au cafe... et la realite du 3e rappel de facture impayee.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
+            <span class="read-time">6 min</span>
+            <span class="read-link">Lire <span class="arrow">&rarr;</span></span>
+          </div>
+        </a>
+
+        <a href="#" class="writing-card fade-in fade-in-delay-2">
+          <div class="writing-tag"><span class="dot blue"></span> tech & ia</div>
+          <h3>Claude Code m'a fait gagner 200 heures en 6 mois. Voici comment.</h3>
+          <p>Pas un article sponsorise. Juste un freelance qui a trouve son meilleur outil et qui veut partager les chiffres.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
+            <span class="read-time">8 min</span>
+            <span class="read-link">Lire <span class="arrow">&rarr;</span></span>
+          </div>
+        </a>
+
+        <a href="#" class="writing-card fade-in fade-in-delay-1">
+          <div class="writing-tag"><span class="dot orange"></span> digital nomade</div>
+          <h3>La checklist depart : SASU, ARE, visa, et le stress que personne ne mentionne.</h3>
+          <p>L'administratif francais quand tu veux partir bosser depuis l'etranger. Spoiler : c'est un sport de combat.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
+            <span class="read-time">10 min</span>
+            <span class="read-link">Lire <span class="arrow">&rarr;</span></span>
+          </div>
+        </a>
+
+        <a href="#" class="writing-card fade-in fade-in-delay-2">
+          <div class="writing-tag"><span class="dot green"></span> freelance</div>
+          <h3>TDAH et freelance : le chaos organise comme methode de travail.</h3>
+          <p>Comment j'ai transforme mon cerveau en systeme de productivite. Enfin, la plupart du temps.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;">
+            <span class="read-time">7 min</span>
+            <span class="read-link">Lire <span class="arrow">&rarr;</span></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VALUES ============ -->
+  <section class="noise" style="background: var(--bg-warm); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div class="fade-in">
+        <div class="section-mono">// convictions</div>
+        <div style="font-size: 2rem; font-weight: 700; letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 0.5rem;">
+          Ce en quoi <span style="font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--text-secondary);">je crois.</span>
+        </div>
+      </div>
+      <div class="values-grid fade-in">
+        <div class="value-item">
+          <div class="value-quote">"Montre les chiffres, pas les promesses."</div>
+          <p>En freelance comme en consulting. Si je ne peux pas prouver un resultat, je ne le vends pas. C'est aussi simple que ca.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-quote">"Le meilleur bureau, c'est celui qui change."</div>
+          <p>Le nomadisme n'est pas une fuite. C'est une conviction que la creativite vient du mouvement, pas de la routine.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-quote">"L'IA est un outil, pas une personnalite."</div>
+          <p>Je l'utilise 8h par jour. Mais c'est moi qui pense, qui decide, et qui met mon nom sur le livrable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STACK ============ -->
+  <section class="stack-section" id="stack">
+    <div class="container fade-in">
+      <div class="section-mono">// outils du quotidien</div>
+      <div style="font-size: 2rem; font-weight: 700; letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 0.25rem;">Ma stack.</div>
+      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.7;">Les outils que j'utilise tous les jours, pour le boulot et le reste.</p>
+      <div class="stack-grid">
+        <div class="stack-item"><span class="icon">&#128736;</span> Claude Code</div>
+        <div class="stack-item"><span class="icon">&#9997;</span> Notion</div>
+        <div class="stack-item"><span class="icon">&#128640;</span> Vercel</div>
+        <div class="stack-item"><span class="icon">&#128230;</span> Docker</div>
+        <div class="stack-item"><span class="icon">&#127912;</span> Figma</div>
+        <div class="stack-item"><span class="icon">&#128172;</span> Slack</div>
+        <div class="stack-item"><span class="icon">&#128247;</span> iPhone 15</div>
+        <div class="stack-item"><span class="icon">&#127925;</span> Spotify</div>
+        <div class="stack-item"><span class="icon">&#128218;</span> Kindle</div>
+        <div class="stack-item"><span class="icon">&#9749;</span> Cafe noir</div>
+        <div class="stack-item"><span class="icon">&#127939;</span> Running</div>
+        <div class="stack-item"><span class="icon">&#128187;</span> MacBook M3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONNECT CTA ============ -->
+  <div class="connect-outer" id="connect">
+    <div class="connect-section fade-in">
+      <div class="section-mono" style="color:var(--text-tertiary);text-align:center;position:relative;z-index:1;">// contact</div>
+      <h2>Envie de <span class="serif-accent">discuter ?</span></h2>
+      <p>Un projet, une question, ou juste envie de dire salut depuis l'autre bout du monde. Je reponds toujours.</p>
+      <div class="connect-links">
+        <a href="#" class="btn-connect-primary">Envoyer un mail</a>
+        <a href="#" class="btn-connect-ghost">Twitter / X</a>
+        <a href="#" class="btn-connect-ghost">LinkedIn</a>
+        <a href="#" class="btn-connect-ghost">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>antoine.life — prototype design — ne pas diffuser</p>
+  </footer>
+
+  <script>
+    // Cursor
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; dot.style.left = mouseX+'px'; dot.style.top = mouseY+'px'; });
+    function animateRing() { ringX += (mouseX-ringX)*0.18; ringY += (mouseY-ringY)*0.18; ring.style.left = ringX+'px'; ring.style.top = ringY+'px'; requestAnimationFrame(animateRing); }
+    animateRing();
+    document.querySelectorAll('a,button,.value-item,.writing-card,.stack-item,.photo-frame,.now-card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => { ring.classList.remove('hovering'); ring.classList.remove('hovering-cta'); });
+    });
+    document.querySelectorAll('.btn-warm,.btn-lg,.connect-links a,.btn-connect-primary').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.classList.remove('hovering'); ring.classList.add('hovering-cta'); });
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering-cta'));
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.15 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
