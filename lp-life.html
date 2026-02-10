@@ -119,32 +119,32 @@
     .nav-inner {
       max-width: 600px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
-      height: 44px;
+      height: 48px;
     }
-    /* Logo-Switch — logo + domain toggle fused */
+    /* Logo-Switch — shared between .works & .life */
     .logo-switch {
       display: flex; align-items: center; gap: 0; text-decoration: none;
     }
     .logo-fixed {
-      font-weight: 600; font-size: 0.875rem; letter-spacing: -0.03em;
+      font-weight: 700; font-size: 0.9rem; letter-spacing: -0.03em;
       color: var(--text); line-height: 1;
     }
     .logo-toggle {
       display: inline-flex; align-items: center;
-      background: rgba(0,0,0,0.05); border-radius: 100px; padding: 2px;
-      margin-left: 0;
+      background: rgba(0,0,0,0.05); border-radius: 100px; padding: 3px;
     }
     .logo-toggle a {
       font-size: 0.8125rem; font-weight: 600; letter-spacing: -0.02em;
       padding: 4px 10px; border-radius: 100px; text-decoration: none;
       color: var(--text-tertiary); transition: all 0.2s; line-height: 1.2;
+      -webkit-tap-highlight-color: transparent;
     }
     .logo-toggle a.active {
       background: var(--bg-card); color: var(--text);
-      box-shadow: 0 0.5px 2px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
     .logo-toggle .sep {
-      width: 0.5px; height: 12px; background: rgba(0,0,0,0.1); flex-shrink: 0;
+      width: 1px; height: 12px; background: rgba(0,0,0,0.1); flex-shrink: 0;
     }
 
     /* nav-links removed — logo-switch replaces domain switch */
